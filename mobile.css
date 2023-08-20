@@ -1,0 +1,23 @@
+
+
+
+
+    .calculator {
+        width: 90%;
+        max-width: 300px;
+        padding: 10px;
+        text-align: center;
+        margin: auto;
+    }
+
+    #display {
+        font-size: 18px;
+        padding: 5px;
+        margin-bottom: 5px;
+    }
+
+    #history {
+        font-size: 12px;
+        text-align: left;
+        padding: 0 5px;
+    }

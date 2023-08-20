@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculadora</title>
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" media="screen and (max-width: 768px)" href="mobile.css"> 
+</head>
+<body>
+
+<div class="calculator">
+    <input type="text" id="display" readonly>
+    <br>
+    <div id="history"></div> 
+    <br>
+    <button tabindex="0" onclick="appendToDisplay('1')">1</button>
+    <button tabindex="0" onclick="appendToDisplay('2')">2</button>
+    <button tabindex="0" onclick="appendToDisplay('3')">3</button>
+    <button tabindex="0" onclick="appendToDisplay('4')">4</button>
+    <button tabindex="0" onclick="appendToDisplay('5')">5</button>
+    <button tabindex="0" onclick="appendToDisplay('6')">6</button>
+    <button tabindex="0" onclick="appendToDisplay('7')">7</button>
+    <button tabindex="0" onclick="appendToDisplay('8')">8</button>
+    <button tabindex="0" onclick="appendToDisplay('9')">9</button>
+    <button tabindex="0" onclick="appendToDisplay('0')">0</button>
+    <button tabindex="0" onclick="appendToDisplay('.')">.</button>
+    <button tabindex="0" onclick="appendToDisplay('+')">+</button>
+    <button tabindex="0" onclick="appendToDisplay('-')">-</button>
+    <button tabindex="0" onclick="appendToDisplay('*')">*</button>
+    <button tabindex="0" onclick="appendToDisplay('/')">/</button>
+    <button tabindex="0" onclick="appendToDisplay('(')">(</button>
+    <button tabindex="0" onclick="appendToDisplay(')')">)</button>
+    <button tabindex="0" onclick="appendToDisplay('{')">{</button>
+    <button tabindex="0" onclick="appendToDisplay('}')">}</button>
+    <button tabindex="0" onclick="appendToDisplay('[')">[</button>
+    <button tabindex="0" onclick="appendToDisplay(']')">]</button>
+    <button tabindex="0" onclick="clearLastDigit()">←</button>
+    <button tabindex="0" onclick="clearDisplay()">C</button>
+    <button tabindex="0" onclick="calculate()">=</button>
+</div>
+
+<script>
+    let history = [];
+
+    document.addEventListener('keydown', handleKeyPress);
+
+    function handleKeyPress(event) {
+        const key = event.key;
+        if (key === 'Enter') {
+            calculate();
+        } else if (key === 'Backspace') {
+            clearLastDigit();
+        } else if (key === ' ') { // Espaço
+            clearDisplay();
+        } else if (/\d/.test(key)) { // Dígitos de 0 a 9
+            appendToDisplay(key);
+        } else if (/[\+\-\*\/\(\)\[\]\{\}]/.test(key)) { // Operadores e símbolos especiais
+            appendToDisplay(key);
+        }
+    }
+
+    function appendToDisplay(value) {
+        document.getElementById('display').value += value;
+    }
+
+    function clearDisplay() {
+        document.getElementById('display').value = '';
+    }
+
+    function clearLastDigit() {
+        const currentValue = document.getElementById('display').value;
+        document.getElementById('display').value = currentValue.slice(0, -1);
+    }
+
+    function calculate() {
+        try {
+            const expression = document.getElementById('display').value;
+            const result = eval(expression);
+            history.push(expression + " = " + result); // Adicionar ao histórico
+            document.getElementById('display').value = result;
+            updateHistory(); // Atualizar o histórico na página
+        } catch (error) {
+            document.getElementById('display').value = 'Erro';
+        }
+    }
+
+    function updateHistory() {
+        const historyDiv = document.getElementById('history');
+        historyDiv.innerHTML = '<strong>Histórico de Cálculos:</strong><br>';
+        for (let i = 0; i < history.length; i++) {
+            historyDiv.innerHTML += history[i] + '<br>';
+        }
+    }
+</script>
+</body>
+</html>
+
