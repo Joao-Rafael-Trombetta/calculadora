@@ -2,89 +2,133 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Portfólio</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    .header {
-      background-color: #121212;
-      padding: 20px;
-      text-align: center;
-      color: white;
-    }
-    h1 {
-      margin: 0;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      padding: 10px 0;
-      margin: 0;
-    }
-    li {
-      margin: 10px;
-    }
-    .btn {
-      display: inline-block;
-      padding: 10px 20px;
-      border-radius: 20px;
-      text-align: center;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .btn-instagram {
-      background-color: #C13584;
-      color: white;
-    }
-    .btn-threads {
-      background-color: black;
-      color: white;
-    }
-    .btn-github {
-      background-color: #1F2937;
-      color: white;
-    }
-    .github-section {
-      text-align: center;
-      padding: 20px;
-      color: white;
-    }
-    .white-section {
-      text-align: left;
-      padding: 20px;
-    }
-    p {
-      font-family: 'Frutiger', sans-serif;
-      margin: 0;
-    }
-  </style>
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Frutiger:wght@300&display=swap">
+    <title>Calculadora</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .calculator {
+            width: 300px;
+            border: 1px solid #ccc;
+            background-color: #333;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #display {
+            width: 100%;
+            font-size: 20px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #history {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            margin: 5px;
+            border: none;
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
 </head>
 <body>
-  <div class="header">
-    <h1>Portfólio</h1>
-  </div>
-  <div class="header">
-    <h1>Estas são minhas redes</h1>
-  </div>
-  <ul>
-    <li><a class="btn btn-instagram" href="https://instagram.com/joao_rafael_trombetta?utm_source=qr&igshid=MzNlNGNkZWQ4Mg%3D%3D" target="_blank">Instagram</a></li>
-    <li><a class="btn btn-threads" href="https://www.threads.net/@joao_rafael_trombetta" target="_blank">Threads</a></li>
-  </ul>
-  <div class="github-section">
-    <ul>
-      <li><a class="btn btn-github" href="https://github.com/Joao-Rafael-Trombetta" target="_blank">GitHub</a></li>
-    </ul>
-  </div>
-  <div class="white-section">
-    <p>Fiz a formação de edição de vídeo completa do Alura e no momento estou estudando programação e HTML/CSS. Meus certificados não estão com meu nome pois minha mãe assinou no Alura como Angela Trombetta, mas sou eu quem usa.</p>
-  </div>
+
+<div class="calculator">
+    <input type="text" id="display" readonly>
+    <br>
+    <div id="history"></div> <!-- Histórico de cálculos -->
+    <br>
+    <button onclick="appendToDisplay('1')">1</button>
+    <button onclick="appendToDisplay('2')">2</button>
+    <button onclick="appendToDisplay('3')">3</button>
+    <button onclick="appendToDisplay('+')">+</button>
+    <br>
+    <button onclick="appendToDisplay('4')">4</button>
+    <button onclick="appendToDisplay('5')">5</button>
+    <button onclick="appendToDisplay('6')">6</button>
+    <button onclick="appendToDisplay('-')">-</button>
+    <br>
+    <button onclick="appendToDisplay('7')">7</button>
+    <button onclick="appendToDisplay('8')">8</button>
+    <button onclick="appendToDisplay('9')">9</button>
+    <button onclick="appendToDisplay('*')">*</button>
+    <br>
+    <button onclick="appendToDisplay('0')">0</button>
+    <button onclick="appendToDisplay('.')">.</button>
+    <button onclick="appendToDisplay('(')">(</button>
+    <button onclick="appendToDisplay(')')">)</button>
+    <button onclick="appendToDisplay('[')">[</button>
+    <button onclick="appendToDisplay(']')">]</button>
+    <button onclick="appendToDisplay('{')">{</button>
+    <button onclick="appendToDisplay('}')">}</button>
+    <button onclick="clearLastDigit()">←</button>
+    <button onclick="clearDisplay()">C</button>
+    <button onclick="calculate()">=</button>
+    <button onclick="appendToDisplay('/')">/</button>
+</div>
+
+<script>
+    let history = [];
+
+    function appendToDisplay(value) {
+        document.getElementById('display').value += value;
+    }
+
+    function clearDisplay() {
+        document.getElementById('display').value = '';
+    }
+
+    function clearLastDigit() {
+        const currentValue = document.getElementById('display').value;
+        document.getElementById('display').value = currentValue.slice(0, -1);
+    }
+
+    function calculate() {
+        try {
+            const expression = document.getElementById('display').value;
+            const result = eval(expression);
+            history.push(expression + " = " + result); // Adicionar ao histórico
+            document.getElementById('display').value = result;
+            updateHistory(); // Atualizar o histórico na página
+        } catch (error) {
+            document.getElementById('display').value = 'Erro';
+        }
+    }
+
+    function updateHistory() {
+        const historyDiv = document.getElementById('history');
+        historyDiv.innerHTML = '<strong>Histórico de Cálculos:</strong><br>';
+        for (let i = 0; i < history.length; i++) {
+            historyDiv.innerHTML += history[i] + '<br>';
+        }
+    }
+</script>
+
 </body>
 </html>
